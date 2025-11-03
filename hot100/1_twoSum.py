@@ -23,7 +23,15 @@ def twoSum(nums, target):
 
 
 # 暴力枚举
-def 
+def twoSum_baoli(nums:list[int],target:int) -> list[int]:
+    n=len(nums)
+    for i in range(n):
+        for j in range(i+1,n):
+            if nums[i]+nums[j]== target:
+                return[i,j]
+    return []
+
+# 哈希表
 
 
 # 测试代码
@@ -33,7 +41,7 @@ if __name__ == "__main__":
     target = 9
     print(f"输入数组: {nums}")
     print(f"目标值: {target}")
-    result = twoSum(nums, target)
+    result = twoSum_baoli(nums, target)
     print(f"输出: {result}")  # 应该输出 [0, 1]
     
     # 额外测试用例
@@ -41,5 +49,5 @@ if __name__ == "__main__":
     target2 = 6
     print(f"\n输入数组: {nums2}")
     print(f"目标值: {target2}")
-    result2 = twoSum(nums2, target2)
+    result2 = twoSum_baoli(nums2, target2)
     print(f"输出: {result2}")  # 应该输出 [1, 2]
