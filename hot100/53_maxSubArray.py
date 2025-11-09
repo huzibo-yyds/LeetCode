@@ -1,7 +1,8 @@
 # 最大子数组和  数组｜分治｜动态规划
 # 给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
 
-def maxSubArray(nums: list[int]) -> int:
+# 1️⃣ DP implement
+def maxSubArray_1(nums: list[int]) -> int:
 
     # 初始化状态
     current_sum = nums[0]
@@ -17,6 +18,10 @@ def maxSubArray(nums: list[int]) -> int:
 
     return max_sum
 
+# 2️⃣ TODO 分治实现
+def maxSubArray(nums: list[int]) -> int:
+
+    pass
 
 # 测试用例
 if __name__ == "__main__":
