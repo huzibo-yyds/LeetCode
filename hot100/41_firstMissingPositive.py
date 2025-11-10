@@ -15,7 +15,7 @@ def firstMissingPositive(nums: list[int]) -> int:
     nums.sort()
     n=len(nums)
     temp=1
-    
+
     # - 没有正数的情况
     if nums[n-1]<=0:
         return 1
@@ -34,6 +34,27 @@ def firstMissingPositive(nums: list[int]) -> int:
 
     return temp
 
+# 示例参考
+def firstMissingPositive_ck(nums: list[int]) -> int:
+    '''
+    1- 只关注有用的数，将有用的数放在正确的位置上
+    2- 用数组当做哈希桶（原地哈希）
+      操作中忽略，小于0，大于n，以及重复的数
+    '''
+    n= len(nums)
+
+    # 1- 将正整数放到正确的位置 
+    for i in range(n):
+        while 1<=nums[i]<=n and nums[nums[i]-1]!=nums[i]:
+            correct_pos = nums[i]-1
+            nums[i],nums[correct_pos]= nums[correct_pos],nums[i] #交换
+
+    # 2- 找到第一个不在正确位置的数
+    for i in range(n):
+        if nums[i]!=i+1:
+            return i+1
+    
+    return n+1
 # 测试用例
 if __name__ == "__main__":
     # 示例 1
