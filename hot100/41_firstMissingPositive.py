@@ -15,22 +15,24 @@ def firstMissingPositive(nums: list[int]) -> int:
     nums.sort()
     n=len(nums)
     temp=1
-
+    
     # - 没有正数的情况
     if nums[n-1]<=0:
         return 1
 
-    for i in range(n):
-        if(nums[i]==1):
+    i = 0
+    while i<n:
+        if nums[i]==temp:
             while i<n and nums[i]==temp: # - 从下往上寻找第一个缺失正数
                 i+=1
-                temp+=1
+            # 考虑重复temp
+            temp+=1
+        elif nums[i]>temp: # (1 正数未从1开始 (2 一般情况 
             return temp
-        
-        elif nums[i]>1: # - 正数未从1开始
-            return 1
+        else:
+            i+=1
 
-    return n+1
+    return temp
 
 # 测试用例
 if __name__ == "__main__":
@@ -49,4 +51,10 @@ if __name__ == "__main__":
     print(f"输入: {nums3}")
     print(f"输出: {firstMissingPositive(nums3)}")  # 期望输出: 1
 
-    num
+    nums4= [0]
+    print(f"输入: {nums4}")
+    print(f"输出: {firstMissingPositive(nums4)}")  # 期望输出: 1
+    
+    nums5= [1,2,3]
+    print(f"输入: {nums5}")
+    print(f"输出: {firstMissingPositive(nums5)}")  # 期望输出: 4
