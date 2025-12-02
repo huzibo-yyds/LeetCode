@@ -34,3 +34,30 @@ class Solution:
 
         return result
     # ❌产生重复组合 [[2,2,3],[2,3,2],[3,2,2],[7]] 
+    # ✅start_index解决
+
+    # 优化：可以先对 candidates 排序，这样剪枝可以更早触发
+    def combinationSum_optimized(self, candidates: list[int], target: int) -> list[list[int]]:
+        path = []
+        result = []
+        candidates.sort() # 排序
+
+        def backtrack(start_index: int, current_sum: int):
+            if current_sum == target:
+                result.append(path[:])
+                return
+
+            for i in range(start_index, len(candidates)):
+                num = candidates[i]
+                
+                # 优化剪枝：如果当前和加上 num 就超过了 target，
+                # 因为数组已排序，后续的数字只会更大，所以可以直接 break 循环
+                if current_sum + num > target:
+                    break
+
+                path.append(num)
+                backtrack(i, current_sum + num)
+                path.pop()
+        
+        backtrack(0, 0)
+        return result
