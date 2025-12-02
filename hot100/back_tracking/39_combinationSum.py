@@ -5,11 +5,14 @@
 
 class Solution:
     def combinationSum(self, candidates: list[int], target: int) -> list[list[int]]:
-
+        '''
+        单调递增，全元素组合排列，允许重复元素
+        '''
         path=[]
         result = []
 
-        def backtrack(curr_sum: int):
+        # 增加 start_index 避免重复组合
+        def backtrack(start_index: int,curr_sum: int):
             if curr_sum==target:
                 result.append(path[:])
                 return
@@ -18,13 +21,15 @@ class Solution:
                 return
 
             # 📍 生成所有数字的全排列组合
-            for num in candidates:
+            for i in range(start_index,len(candidates)):
+                num=candidates[i]
+                # 深搜三个关键步骤 
                 path.append(num)
-                backtrack(curr_sum+num)
+                backtrack(i,curr_sum+num) # 使用i确保能重复利用，但不会出现,如 [2,2,3],[2,3,2]的重复组合，只能单调递增
                 path.pop()
             
         
-        backtrack(0)
+        backtrack(0,0)
 
 
         return result
