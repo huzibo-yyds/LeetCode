@@ -68,18 +68,22 @@ class Solution:
         visited = [0] * numCourses
 
         def has_cycle(course:int)-> bool:
+            # 如果在当前DFS过程中，再次遇到该节点，则证明有环
             if visited[course] == 1:
                 return True
+            
+            # 如果该节点已被其他DSF路径访问过并确定无环，则直接跳过
             if visited[course]==2:
                 return False
             
+            # 标记当前节点正在访问
             visited[course] = 1
 
             for next_course in adj[course]:
                 if has_cycle(next_course):
                     return True
                 
-            visited[course]=2
+            visited[course]=2 # 探索完所有领居，安全，标记为已访问
             return False
 
         for i in range(numCourses):
