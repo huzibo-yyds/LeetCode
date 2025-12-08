@@ -7,7 +7,7 @@
 
 【Code】
 
-().[4_find_Median_SortedArrays.py]
+[4_find_Median_SortedArrays.py](./4_find_Median_SortedArrays.py)
 
 
 【方法】
