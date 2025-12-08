@@ -1,3 +1,96 @@
+### 模板
+
+最常见的两类问题
+
+#### 配对消除
+
+- 20，括号匹配
+- 394，嵌套 先进先出
+
+*核心思想*
+这类问题的本质是处理成对出现的元素，当一个“结束”符号出现时，需要与离它**最近**的一个“开始”符号进行匹配和抵消。
+
+*问题特征*
+
+- 问题中存在**成对**的、需要**匹配**的元素。
+- 匹配规则具有**就近原则**，即一个结束符号总是匹配最近的那个未被匹配的开始符号。
+- 常常涉及**合法性校验**（如括号是否合法）或**化简**（如消除冗余部分）。
+
+*通用解题模板*
+
+1. 初始化，栈、匹配关系哈希表
+2. 遇到开始符号，入栈
+3. 遇到结束符号，判断是否匹配
+
+```python
+def pairing_elimination_template(sequence):
+    stack = []
+    # mapping = { 'end_symbol': 'start_symbol' } # 可选的配对关系
+
+    for element in sequence:
+        if is_start_symbol(element):
+            # 1. 遇到“开始”符号，一律入栈
+            stack.append(element)
+        elif is_end_symbol(element):
+            # 2. 遇到“结束”符号，进行判断
+            # a. 如果栈为空，说明没有匹配的开始符号，无效
+            if not stack:
+                return False # or handle as invalid
+          
+            # b. 弹出栈顶的“开始”符号
+            start_symbol = stack.pop()
+
+            # c. 检查是否匹配
+            if not is_match(start_symbol, element):
+                return False # or handle as invalid
+  
+    # 3. 遍历结束后，如果栈为空，说明所有符号都完美配对
+    return not stack
+```
+
+#### 单调栈
+
+- 155，最小栈
+- 739，每日温度
+
+*核心思想*
+单调栈是一种特殊的栈，它在操作过程中始终保持栈内元素的**单调性**（单调递增或单调递减）。它的主要作用是高效地找到一个元素**左边或右边第一个比它大/小**的元素。
+
+*核心机制*
+当一个新元素将要入栈时，为了维持栈的单调性，我们会不断地将栈顶不符合单调性的元素弹出。**而这个弹出的时刻，就是我们找到答案的时刻！**
+
+- 对于被弹出的元素 `stack.top()` 来说，新来的这个元素 `new_element` 就是它右边第一个破坏单调性（即第一个比它大/小）的元素。
+
+*问题特征*
+
+- 题目要求寻找每个元素**左/右侧**的**第一个**更大/更小的元素。
+- 关键词：“下一个更大”、“上一个更小”、“最近的大于”等。
+- 问题可以转化为求解每个元素与其左/右侧第一个关键元素之间的**距离**或**关系**。
+
+*通用解法模板 (以“寻找右侧第一个更大”为例，递减栈)*
+
+```python
+def monotonic_stack_template(nums):
+    n = len(nums)
+    result = [-1] * n # 初始化结果数组
+    stack = [] # 栈中存储的是元素的索引
+
+    for i in range(n):
+        # 1. 核心：当栈不为空，且当前元素大于栈顶索引对应的元素时
+        while stack and nums[i] > nums[stack[-1]]:
+            # 2. 找到了栈顶元素的“右侧第一个更大元素”
+            top_index = stack.pop()
+        
+            # 3. 记录结果（可以是值，也可以是距离）
+            result[top_index] = nums[i] # 或者 result[top_index] = i - top_index
+    
+        # 4. 将当前元素的索引入栈，维持单调性
+        stack.append(i)
+    
+    return result
+```
+
+
 ### 20 有效的括号_low
 
 【题意】
@@ -30,7 +123,7 @@ class Solution:
     def isValid(self, s: str) -> bool:
         if len(s)%2==1: # 若长度为奇数则直接不用判断
             return False
-    
+  
         # 在python中使用list模拟栈
         stack = []
         # 配对关系的哈希表
@@ -47,11 +140,9 @@ class Solution:
                     return False
             else:   # 左括号
                 stack.append(char)
-                
+              
         return not stack
 ```
-
-
 
 ### 155 最小栈
 
@@ -87,7 +178,7 @@ class MinStack:
             # 只有当 min_stack 为空，或新元素小于等于当前最小值
             # 等于，情况也需要加
             self.min_stack.append(val)
-    
+  
     def pop(self) -> None:
         popped_val = self.stack.pop()
         if popped_val==self.min_stack[-1]:
@@ -95,13 +186,10 @@ class MinStack:
 
     def top(self) -> int:
         return self.stack[-1]
-    
+  
     def getMin(self) -> int:
         return  self.min_stack[-1]
 ```
-
-
-
 
 ### 394 字符串解码
 
@@ -154,8 +242,6 @@ class Solution:
                 res+=char # 记录当前层字符
         return res
 ```
-
-
 
 ### 739 每日温度
 
